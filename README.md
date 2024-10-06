@@ -2,7 +2,7 @@
 <p align="center">
   <h1 align="center">UniMuMo: Unified Text, Music and Motion Generation</h1>
   <p align="center">
-    <a href="hanyangclarence.github.io">Han Yang</a>,
+    <a href="https://hanyangclarence.github.io/">Han Yang</a>,
     <a href="https://kun-su.netlify.app/">Kun Su</a>,
     <a href="">Yutong Zhang</a>,
     <a href="https://jiabenchen.github.io/">Jiaben Chen</a>,
