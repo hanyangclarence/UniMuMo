@@ -1,15 +1,31 @@
-<div align="center">  
-
-# UniMuMo: Unified Text, Music and Motion Generation
-
-## Supplementary Materials
-
-</div>
+<br/>
+<p align="center">
+  <h1 align="center">UniMuMo: Unified Text, Music and Motion Generation</h1>
+  <p align="center">
+    <a href="hanyangclarence.github.io">Han Yang</a>,
+    <a href="https://kun-su.netlify.app/">Kun Su</a>,
+    <a href="">Yutong Zhang</a>,
+    <a href="https://jiabenchen.github.io/">Jiaben Chen</a>,
+    <a href="https://scholar.google.com/citations?user=uEpr4C4AAAAJ&hl=en">Kaizhi Qian</a>,
+    <a href="">Gaowen Liu</a>,
+    <a href="https://people.csail.mit.edu/ganchuang">Chuang Gan</a>
+  </p>
+  <p align="center">
+    <a href="https://google.com">
+      <img src='https://img.shields.io/badge/Paper-PDF-red?style=flat&logo=arXiv&logoColor=red' alt='Paper PDF'>
+    </a>
+    <a href='https://hanyangclarence.github.io/unimumo_demo/' style='padding-left: 0.5rem;'>
+      <img src='https://img.shields.io/badge/Project-Page-blue?style=flat&logo=Google%20chrome&logoColor=blue' alt='Project Page'>
+    </a>
+  </p>
+</p>
 
 ---
 
-This is a temporary repository of **UniMuMo** for AAAI 2025 submission No. 2405. The repo contains instructions on data preprocessing, training and evaluation of the model. However, due to the size limit, we could only include a tiny subset of training data as an example. Also, since it is not allowed to provide links to online materials, we could not provide the trained weight of our model. 
+This is the official repository of **UniMuMo**, a unified music, motion and text generation model. 
+In this repository, we present model and data processing code, as well as the model weights.
 
+![](assets/Teaser.png)
 
 ---
 
@@ -18,7 +34,11 @@ This is a temporary repository of **UniMuMo** for AAAI 2025 submission No. 2405.
 
 ### 1. Conda environment
 ```bash
+# clone project   
+git clone https://github.com/hanyangclarence/UniMuMo
+
 # create conda environment
+cd UniMuMo
 conda create -n unimumo python=3.9
 conda activate unimumo
 
@@ -30,9 +50,9 @@ pip install madmom==0.16.1
 
 ### 2. Download pretrained weight
 The weight of UniMuMo consists of three parts: a music VQ-VAE, a motion VQ-VAE and a music-motion LM. 
-For inference, please download the unified weight that includes all three parts from xxx.
+For inference, please download the unified weight that includes all three parts from [here](https://drive.google.com/uc?id=1_EWxTWWj1CHtac-Acm1hoJ_DvbzVNHrJ).
 For data preprocessing or training, only one or two parts of them are required for each stage. 
-So please download the separate weights from xxx.
+So please download the separate weights from [here](https://drive.google.com/uc?id=1mNgBLP2fMSbL8aTBx5Oj_E8OlSgfYObV).
 
 After downloaded, please put the weights into folder `pretrained`
 
@@ -176,19 +196,20 @@ UniMuMo_Project
 
 ### 1. Prepare the Datasets
 #### 1.1 Music dataset
-Please refer to the website of `Music4All` to download the dataset. 
+Please refer to the website of [Music4All](https://sites.google.com/view/contact4music4all) to download the dataset. 
 After downloaded, put the audio files in folder `data/music/audios`.
 #### 1.2 Motion dataset
-Please download `HumanML3D`, `AIST++` and `DanceDB` according to their instructions. After downloaded, please put the data and metadata into folder `data/motion`. Note that we have provided `Mean.npy` and `Std.npy` for motion features, which is calculated across all three datasets. Don't overwrite it with the mean and std from HumanML3D dataset.
+Please download [HumanML3D](https://github.com/EricGuo5513/HumanML3D), [AIST++](https://google.github.io/aistplusplus_dataset/factsfigures.html)
+and [DanceDB](https://dancedb.eu/) according to their instructions. After downloaded, please put the data and metadata into folder `data/motion`. Note that we have provided `Mean.npy` and `Std.npy` for motion features, which is calculated across all three datasets. Don't overwrite it with the mean and std from HumanML3D dataset.
 
 
 
 ### 2. Preprocess the Data
 #### 2.1 Split vocals from music (optional)
-We use `Demucs` for splitting music and vocal.
+We use [Demucs](https://github.com/facebookresearch/demucs) for splitting music and vocal.
 #### 2.2 Music code extraction and beat detection
-To speed up training, we use `Encodec` to 
-extract all the music codes and use `drum-aware4beat` to track 
+To speed up training, we use [Encodec](https://github.com/facebookresearch/audiocraft/blob/main/docs/ENCODEC.md) to 
+extract all the music codes and use [drum-aware4beat](https://github.com/SunnyCYC/drum-aware4beat) to track 
 the music beat before training. Please set the correct data path in `preprocessing/extract_music_code_beat.py` and run:
 ```bash
 python preprocessing/extract_music_code_beat.py --start 0.0 --end 1.0
@@ -267,3 +288,14 @@ and you can also set `start` and `end` config to split the job.
 
 ### 2. Quantitative Evaluation
 As described in the paper in detail, we directly adopt the evaluation metrics from various repos. Please refer to the paper for further guide on running each metrics.
+
+
+
+## Acknowledgement
+Our code is partially built on the following repositories: [Audiocraft](https://github.com/facebookresearch/audiocraft),
+[Stable Diffusion](https://github.com/CompVis/stable-diffusion), [drum-aware4beat](https://github.com/SunnyCYC/drum-aware4beat)
+and [T2M-GPT](https://github.com/Mael-zys/T2M-GPT). Thanks to their great work!
+
+
+
+ 
