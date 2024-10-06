@@ -1,0 +1,1 @@
+{"version": {"cuda": 1108, "torch": "2.0.1+cu118", "python": "3.9.13"}, "env": {"TORCH_CUDA_ARCH_LIST": "5.0+PTX 6.0 6.1 7.0 7.5 8.0 8.6", "XFORMERS_BUILD_TYPE": "Release", "XFORMERS_ENABLE_DEBUG_ASSERTIONS": null, "NVCC_FLAGS": null, "XFORMERS_PACKAGE_FROM": "wheel-v0.0.20"}}

@@ -1,0 +1,7 @@
+Elena_Sad_v2_C3D_poses
+Andria_Satisfied_v2_C3D_poses
+Elena_Miserable_v2_C3D_poses
+Andria_Tired_v2_C3D_poses
+Elena_Angry_v2_C3D_poses
+Elena_Tired_v2_C3D_poses
+Andria_Relaxed_v2_C3D_poses

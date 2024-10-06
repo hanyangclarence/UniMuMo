@@ -1,0 +1,99 @@
+model:
+  base_learning_rate: 5e-5
+  target: unimumo.models.transformer_model.MusicMotionTransformer
+  params:
+    name: 'facebook/musicgen-small'
+    music_key: 'music_code'
+    motion_key: 'motion_code'
+    text_cond_key: 'text'
+    motion_weight: 0.15
+    length_single_modal: 500
+    feature_frame_rate: 50
+
+    stage: 'train_caption'
+    monitor: "val/loss"
+
+    generation_params:
+      use_sampling: True
+      temp: 1.
+      top_k: 250
+      top_p: 0.0
+      cfg_coef: 4.0
+      duration: 10
+
+    scheduler_config: # 10000 warmup steps
+      target: unimumo.lr_scheduler.LambdaLinearScheduler
+      params:
+        warm_up_steps: [ 10000 ]
+        cycle_lengths: [ 400000 ]
+        f_start: [ 1.e-6 ]
+        f_max: [ 1. ]
+        f_min: [ 0. ]
+
+    optimization_config:
+      eager_sync: True
+      max_norm: 1.0
+      learning_rate: 5e-5
+      betas: [0.9, 0.95]
+      weight_decay: 0.1
+      eps: 1e-8
+
+    text_model_config:
+      target: unimumo.models.text_generation_model.TextGenerator
+      params:
+        model: 't5-base'
+        max_length: 100
+        context_dim: 1024
+        self_dim: 768
+
+data:
+  target: train.DataModuleFromConfig
+  params:
+    batch_size: 3
+    wrap: True
+    num_workers: 4
+    train:
+      target: unimumo.data.music_motion_text_dataset_captioning.MusicMotionCaptioningDataset
+      params:
+        split: "train"
+        music_meta_dir: 'data/music'
+        motion_meta_dir: 'data/motion'
+        music_code_dir: 'data/music/music4all_codes'
+        motion_code_dir: 'data/motion/motion_code'
+        duration: 10
+        vqvae_sr: 32000
+        natural_language_caption_ratio: 1.0
+
+    validation:
+      target: unimumo.data.music_motion_text_dataset_captioning.MusicMotionCaptioningDataset
+      params:
+        split: "val"
+        music_meta_dir: 'data/music'
+        motion_meta_dir: 'data/motion'
+        music_code_dir: 'data/music/music4all_codes'
+        motion_code_dir: 'data/motion/motion_code'
+        duration: 10
+        vqvae_sr: 32000
+        natural_language_caption_ratio: 1.0
+
+lightning:
+  callbacks:
+    video_logger:
+      target: unimumo.loggers.MusicMotionLogger
+      params:
+        music_vqvae_path: 'pretrained/music_vqvae.bin'
+        motion_vqvae_path: 'pretrained/motion_vqvae.ckpt'
+        motion_vqvae_config_path: 'configs/train_motion_vqvae.yaml'
+        motion_dir: 'data/motion'
+        epoch_frequency: 10
+        batch_frequency: 2000
+        max_video_per_generation: 4
+        duration: 10
+        sr: 32000
+        motion_fps: 60
+        max_video_logged: 120
+        disabled: false
+  trainer:
+    benchmark: True
+    devices: 6
+    num_nodes: 8

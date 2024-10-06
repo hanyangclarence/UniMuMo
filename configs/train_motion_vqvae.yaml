@@ -1,0 +1,87 @@
+model:
+  base_learning_rate: 2e-4
+  target: unimumo.models.motion_vqvae.MotionVQVAE
+  params:
+    monitor: "val/rec_loss"
+    music_key: "waveform"
+    motion_key: "motion"
+    loss_config:
+      target: unimumo.modules.loss.MotionVqVaeLoss
+      params:
+        commitment_loss_weight: 0.02
+        motion_weight: 1.0
+    motion_config:
+      input_dim: 263
+      output_dim: 128
+      emb_dim_encoder: [ 256, 224, 192, 144, 128 ]
+      emb_dim_decoder: [ 128, 144, 192, 224, 256 ]
+      input_fps: 60
+      rvq_fps: 50
+      dilation_growth_rate: 2
+      depth_per_res_block: 6
+      activation: 'relu'
+    music_config:
+      vqvae_ckpt: 'pretrained/music_vqvae.bin'
+      freeze_codebook: True
+    pre_post_quantize_config:
+      pre_quant_conv_mult: 4
+      post_quant_conv_mult: 4
+
+
+data:
+  target: train.DataModuleFromConfig
+  params:
+    batch_size: 7
+    wrap: True
+    num_workers: 4
+    train:
+      target: unimumo.data.music_motion_dataset.MusicMotionDataset
+      params:
+        split: "train"
+        music_dir: 'data/music/audios'
+        motion_dir: 'data/motion'
+        music_meta_dir: 'data/music'
+        music_beat_dir: 'data/music/music4all_beat'
+        duration: 2
+        use_humanml3d: True
+        music_dataset_name: 'music4all'
+        traverse_motion: True
+        align: False
+        motion_fps: 60
+        dance_repeat_time: 20
+
+    validation:
+      target: unimumo.data.music_motion_dataset.MusicMotionDataset
+      params:
+        split: "val"
+        music_dir: 'data/music/audios'
+        motion_dir: 'data/motion'
+        music_meta_dir: 'data/music'
+        music_beat_dir: 'data/music/music4all_beat'
+        duration: 2
+        use_humanml3d: True
+        music_dataset_name: 'music4all'
+        traverse_motion: True
+        align: False
+        motion_fps: 60
+        dance_repeat_time: 20
+
+
+lightning:
+  callbacks:
+    video_logger:
+      target: unimumo.loggers.MotionVQVAELogger
+      params:
+        motion_dir: 'data/motion'
+        epoch_frequency: 10
+        batch_frequency: 4000
+        max_video_per_generation: 4
+        max_video_logged: 120
+        motion_fps: 60
+        disabled: False
+
+  trainer:
+    benchmark: True
+    devices: 6
+    num_nodes: 8
+    strategy: ddp
