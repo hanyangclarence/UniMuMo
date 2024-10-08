@@ -11,7 +11,7 @@
     <a href="https://people.csail.mit.edu/ganchuang">Chuang Gan</a>
   </p>
   <p align="center">
-    <a href="https://google.com">
+    <a href="https://arxiv.org/abs/2410.04534">
       <img src='https://img.shields.io/badge/Paper-PDF-red?style=flat&logo=arXiv&logoColor=red' alt='Paper PDF'>
     </a>
     <a href='https://hanyangclarence.github.io/unimumo_demo/' style='padding-left: 0.5rem;'>
