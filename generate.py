@@ -35,7 +35,7 @@ if __name__ == "__main__":
         type=str,
         required=False,
         help="The path to music metadata dir",
-        default="../My_Project/data/music",
+        default="data/music",
     )
 
     # about input prompt

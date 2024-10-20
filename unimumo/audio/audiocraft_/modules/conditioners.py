@@ -405,10 +405,7 @@ class T5Conditioner(TextConditioner):
             warnings.simplefilter("ignore")
             try:
                 print(f'Load t5 model name: {name}')
-                # name = '/home/hanyang/.cache/huggingface/hub/models--t5-base/snapshots/fe6d9bf207cd3337512ca838a8b453f87a9178ef'
-
                 self.t5_tokenizer = T5Tokenizer.from_pretrained(name)
-
                 t5 = T5EncoderModel.from_pretrained(name).train(mode=finetune)
             finally:
                 logging.disable(previous_level)
