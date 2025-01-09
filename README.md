@@ -199,8 +199,7 @@ UniMuMo_Project
 Please refer to the website of [Music4All](https://sites.google.com/view/contact4music4all) to download the dataset. 
 After downloaded, put the audio files in folder `data/music/audios`.
 #### 1.2 Motion dataset
-Please download [HumanML3D](https://github.com/EricGuo5513/HumanML3D), [AIST++](https://google.github.io/aistplusplus_dataset/factsfigures.html)
-and [DanceDB](https://dancedb.eu/) according to their instructions. After downloaded, please put the data and metadata into folder `data/motion`. Note that we have provided `Mean.npy` and `Std.npy` for motion features, which is calculated across all three datasets. Don't overwrite it with the mean and std from HumanML3D dataset.
+We use motion data from [HumanML3D](https://github.com/EricGuo5513/HumanML3D), [AIST++](https://google.github.io/aistplusplus_dataset/factsfigures.html) and [DanceDB](https://dancedb.eu/) together, preprocessing them into the same format. For convenience, please directly download the preprocessed motion data from [here](https://huggingface.co/ClarenceY/unimumo/blob/main/motion_data.tar.gz).
 
 
 
