@@ -162,6 +162,8 @@ if __name__ == "__main__":
     # load model
     model = UniMuMo.from_checkpoint(model_ckpt)
 
+    waveform_to_visualize = None
+    motion_to_visualize = None
     if generation_target == 'mumo':
         waveform_gen, motion_gen = model.generate_music_motion(
             text_description=text_description_list,
@@ -249,12 +251,6 @@ if __name__ == "__main__":
             motion_to_visualize = model.motion_vec_to_joint(
                 torch.Tensor(model.normalize_motion(motion_feature))
             )
-            
-            # visualize motion
-            visualize_music_motion(
-                waveform=waveform_to_visualize, joint=motion_to_visualize, save_dir=save_path, fps=model.motion_fps
-            )
-            
         
         if music_path is not None and os.path.exists(music_path):
             # load music
@@ -273,6 +269,12 @@ if __name__ == "__main__":
             
             # save the audio into the save dir
             sf.write(os.path.join(save_path, 'audio_to_annotate.wav'), waveform.squeeze(), 32000)
+    
+    if waveform_to_visualize is not None and motion_to_visualize is not None:
+        visualize_music_motion(
+            waveform=waveform_to_visualize, joint=motion_to_visualize, save_dir=save_path, fps=model.motion_fps
+        )
+
 
             
 
