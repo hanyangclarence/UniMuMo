@@ -240,9 +240,9 @@ You can also set `--start` and `--end` to manually distribute the work.
 
 
 ### 5. Train Music-Motion LM
-Please first check the settings in `configs/train_lm.yaml`, and run:
+Please first check the settings in `configs/train_music_motion.yaml`, and run:
 ```bash
-python train.py --stage train_music_motion --base configs/train_lm.yaml
+python train.py --stage train_music_motion --base configs/train_music_motion.yaml
 ```
 Similarly, training can be resumed by appending `-r path_to_previous_checkpoint`.
 
@@ -251,7 +251,7 @@ Similarly, training can be resumed by appending `-r path_to_previous_checkpoint`
 ### 6. Train Captioning Model
 Please run:
 ```bash
-python train.py --stage train_caption --mm_ckpt path_to_last_stage_model --base configs/train_lm.yaml
+python train.py --stage train_caption --mm_ckpt path_to_last_stage_model --base configs/train_caption.yaml
 ```
 Note that it is required to provide the checkpoint of previous stage in `--mm_ckpt`, since the captioning model is built on
 the trained music-motion LM.
